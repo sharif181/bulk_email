@@ -11,20 +11,18 @@ filename = open("file_name_with_extensions.txt").read().split('\n')
 subject = open("email_subject.txt").read().split('\n')
 body = open("email_body.txt").read()
 
-
 msg = MIMEMultipart()
 msg['From'] = username_pass[0]
 msg['To'] = COMMASPACE.join(rec_emails)
 msg['Subject'] = str(subject[0])
 
-attachment = open(str(filename[0]), "rb")
-
-part = MIMEBase('application', 'octet-stream')
-part.set_payload((attachment).read())
-encoders.encode_base64(part)
-part.add_header('Content-Disposition', "attachment; filename= %s" % filename[0])
-
-msg.attach(part)
+if filename[0] != '':
+    attachment = open(str(filename[0]), "rb")
+    part = MIMEBase('application', 'octet-stream')
+    part.set_payload((attachment).read())
+    encoders.encode_base64(part)
+    part.add_header('Content-Disposition', "attachment; filename= %s" % filename[0])
+    msg.attach(part)
 
 msg.attach(MIMEText(str(body), 'plain'))
 text = msg.as_string()
